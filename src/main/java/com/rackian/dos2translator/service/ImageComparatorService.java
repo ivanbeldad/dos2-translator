@@ -11,12 +11,12 @@ import java.awt.image.BufferedImage;
 public class ImageComparatorService {
 
     private BufferedImage textBoxFrame;
-    private CurrentImage currentImage;
+    private CurrentImageService currentImage;
     private ImageComparator comparator;
     private double threshold;
 
     @Autowired
-    public ImageComparatorService(@Qualifier("textBoxFrame") BufferedImage textBoxFrame, CurrentImage currentImage, ImageComparator comparator, @Qualifier("imageComparatorThreshold") double threshold) {
+    public ImageComparatorService(@Qualifier("textBoxFrame") BufferedImage textBoxFrame, CurrentImageService currentImage, ImageComparator comparator, @Qualifier("imageComparatorThreshold") double threshold) {
         this.textBoxFrame = textBoxFrame;
         this.currentImage = currentImage;
         this.comparator = comparator;

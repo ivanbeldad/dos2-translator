@@ -5,11 +5,12 @@ import com.rackian.dos2translator.util.TextBoxFrameDimension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
 @Service
-public class CurrentImage {
+public class CurrentImageService {
 
     private Robot robot;
     private Dimension screenDimension;
@@ -21,12 +22,11 @@ public class CurrentImage {
     private BufferedImage textBoxFrameImage;
 
     @Autowired
-    public CurrentImage(Robot robot, Dimension screenDimension, TextBoxDimension textBoxDimension, TextBoxFrameDimension textBoxFrameDimension) {
+    public CurrentImageService(Robot robot, Dimension screenDimension, TextBoxDimension textBoxDimension, TextBoxFrameDimension textBoxFrameDimension) {
         this.robot = robot;
         this.screenDimension = screenDimension;
         this.textBoxDimension = textBoxDimension;
         this.textBoxFrameDimension = textBoxFrameDimension;
-        this.update();
     }
 
     public BufferedImage getFullScreen() {
@@ -41,6 +41,7 @@ public class CurrentImage {
         return this.textBoxFrameImage;
     }
 
+    @PostConstruct
     public void update() {
         Rectangle screenRect = new Rectangle(screenDimension);
         this.screenImage = robot.createScreenCapture(screenRect);
