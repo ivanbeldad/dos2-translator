@@ -17,8 +17,8 @@ public class Counter {
         visionApiCalls++;
     }
 
-    public void incrementTranslateApiCalls() {
-        visionApiCalls++;
+    public void incrementTranslateApiCalls(int characters) {
+        visionApiCalls += characters;
     }
 
     public long getVisionApiCalls() {

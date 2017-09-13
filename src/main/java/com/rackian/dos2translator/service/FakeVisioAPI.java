@@ -34,7 +34,6 @@ public class FakeVisioAPI implements VisionAPI {
         }
         System.out.println();
         System.out.println();
-        System.out.println(mapperService.mapDialogTextToString(mapperService.mapStringToDialogText(response)));
         return response;
     }
 

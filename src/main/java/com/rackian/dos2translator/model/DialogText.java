@@ -1,10 +1,7 @@
 package com.rackian.dos2translator.model;
 
-import org.springframework.stereotype.Component;
-
 import java.util.Map;
 
-@Component
 public class DialogText {
 
     private String transmitter;
