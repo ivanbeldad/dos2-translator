@@ -16,6 +16,7 @@ public class ImageServiceImpl implements ImageService {
 
     private VisionAPI visionAPI;
     private TranslationAPI translationAPI;
+    private DialogTextMapperService dialogTextMapperService;
     private ImageGeneratorService imageGeneratorService;
     private ImageComparator imageComparator;
     private CurrentImage currentImage;
@@ -27,6 +28,7 @@ public class ImageServiceImpl implements ImageService {
     public ImageServiceImpl(
             VisionAPI visionAPI,
             TranslationAPI translationAPI,
+            DialogTextMapperService dialogTextMapperService,
             ImageGeneratorService imageGeneratorService,
             ImageComparator imageComparator,
             CurrentImage currentImage,
@@ -35,6 +37,7 @@ public class ImageServiceImpl implements ImageService {
             @Qualifier("imageComparatorThreshold") double threshold) {
         this.visionAPI = visionAPI;
         this.translationAPI = translationAPI;
+        this.dialogTextMapperService = dialogTextMapperService;
         this.imageGeneratorService = imageGeneratorService;
         this.imageComparator = imageComparator;
         this.currentImage = currentImage;
@@ -49,12 +52,15 @@ public class ImageServiceImpl implements ImageService {
         currentImage.setImagePack(imageGeneratorService.createImagePack());
     }
 
-    @Scheduled(fixedRate = 3000)
+    @Scheduled(fixedRate = 1000)
     public void checkChanges() {
         update();
         if (readyToSend()) {
             visionAPI.obtainText();
             translationAPI.translate();
+        }
+        if (!isTextBox()) {
+            dialogTextMapperService.clearDialogs();
         }
     }
 

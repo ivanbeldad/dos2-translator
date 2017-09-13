@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@CrossOrigin(origins = "*", allowCredentials = "true", allowedHeaders = "*")
+@CrossOrigin
 public class DialogTextController {
 
     private OriginalDialogText originalDialogText;
