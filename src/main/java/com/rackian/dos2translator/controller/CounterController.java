@@ -3,10 +3,12 @@ package com.rackian.dos2translator.controller;
 import com.rackian.dos2translator.model.Counter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
+@CrossOrigin
 public class CounterController {
 
     private Counter counter;

@@ -30,7 +30,7 @@ public class DialogTextMapperService {
 
     private void setTransmitter(String text, DialogText dialogText) {
         int start = 0;
-        int end = text.indexOf(" - ") - 1;
+        int end = text.indexOf(" - ");
         String transmitter = text.substring(start, end);
         dialogText.setTransmitter(transmitter);
     }
@@ -46,7 +46,7 @@ public class DialogTextMapperService {
         int optionNumber = 1;
         Map<Integer, String> responses = new HashMap<>();
         while (text.contains("\n" + optionNumber + ". ")) {
-            int start = text.indexOf("\n" + optionNumber + ". ") + 4;
+            int start = startOfNumber(text, optionNumber);
             int end;
             if (!text.contains("\n" + (optionNumber + 1) + ". ")) {
                 end = text.length();
@@ -58,6 +58,15 @@ public class DialogTextMapperService {
             optionNumber++;
         }
         dialogText.setResponses(responses);
+    }
+
+    private int startOfNumber(String text, int number) {
+        int start = text.indexOf("\n" + number + ". ");
+        if (start == -1) {
+            start = text.indexOf("\n" + number + ", ");
+        }
+        start += 4;
+        return start;
     }
 
     public String mapOriginDialogTextToString() {

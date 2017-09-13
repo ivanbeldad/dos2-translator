@@ -3,9 +3,14 @@ package com.rackian.dos2translator;
 import com.rackian.dos2translator.util.Resolution;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -16,6 +21,7 @@ import java.io.PrintStream;
 @SpringBootApplication
 @EnableScheduling
 @EnableAspectJAutoProxy(proxyTargetClass = true)
+@EnableWebMvc
 public class Application {
 
     public static void main(String[] args) {
@@ -72,6 +78,16 @@ public class Application {
     @Bean
     public PrintStream printStream() {
         return System.out;
+    }
+
+    @Bean
+    public FilterRegistrationBean corsFilter() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration().applyPermitDefaultValues();
+        source.registerCorsConfiguration("/**", config);
+        FilterRegistrationBean bean = new FilterRegistrationBean(new CorsFilter(source));
+        bean.setOrder(0);
+        return bean;
     }
 
 }
