@@ -1,60 +1,46 @@
 package com.rackian.dos2translator.service;
 
+import com.rackian.dos2translator.model.ImagePack;
 import com.rackian.dos2translator.util.TextBoxDimension;
 import com.rackian.dos2translator.util.TextBoxFrameDimension;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
 @Service
-public class CurrentImageService {
+public class ImageGeneratorService {
 
     private Robot robot;
     private Dimension screenDimension;
     private TextBoxDimension textBoxDimension;
     private TextBoxFrameDimension textBoxFrameDimension;
 
-    private BufferedImage screenImage;
-    private BufferedImage textBoxImage;
-    private BufferedImage textBoxFrameImage;
-
-    @Autowired
-    public CurrentImageService(Robot robot, Dimension screenDimension, TextBoxDimension textBoxDimension, TextBoxFrameDimension textBoxFrameDimension) {
+    public ImageGeneratorService(
+            Robot robot,
+            Dimension screenDimension,
+            TextBoxDimension textBoxDimension,
+            TextBoxFrameDimension textBoxFrameDimension) {
         this.robot = robot;
         this.screenDimension = screenDimension;
         this.textBoxDimension = textBoxDimension;
         this.textBoxFrameDimension = textBoxFrameDimension;
     }
 
-    public BufferedImage getFullScreen() {
-        return this.screenImage;
-    }
-
-    public BufferedImage getTextBox() {
-        return this.textBoxImage;
-    }
-
-    public BufferedImage getTextBoxFrame() {
-        return this.textBoxFrameImage;
-    }
-
-    @PostConstruct
-    public void update() {
+    public ImagePack createImagePack() {
         Rectangle screenRect = new Rectangle(screenDimension);
-        this.screenImage = robot.createScreenCapture(screenRect);
-        this.textBoxImage = this.screenImage.getSubimage(
+        BufferedImage fullScreenImage = robot.createScreenCapture(screenRect);
+        BufferedImage textBoxImage = fullScreenImage.getSubimage(
                 textBoxDimension.getXOffset(),
                 textBoxDimension.getYOffset(),
                 textBoxDimension.getWidth(),
                 textBoxDimension.getHeight());
-        this.textBoxFrameImage = this.screenImage.getSubimage(
+        BufferedImage textBoxFrameImage = fullScreenImage.getSubimage(
                 textBoxFrameDimension.getXOffset(),
                 textBoxFrameDimension.getYOffset(),
                 textBoxFrameDimension.getWidth(),
                 textBoxFrameDimension.getHeight());
+        return new ImagePack(fullScreenImage, textBoxImage, textBoxFrameImage);
     }
 
 }

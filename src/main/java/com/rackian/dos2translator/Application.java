@@ -37,7 +37,7 @@ public class Application {
     }
 
     @Bean
-    public BufferedImage textBoxFrame() {
+    public BufferedImage textBoxFrameImage() {
         try {
             return ImageIO.read(this.getClass().getResourceAsStream("/textBoxFrame.png"));
         } catch (IOException e) {
