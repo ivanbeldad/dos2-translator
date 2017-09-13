@@ -8,4 +8,6 @@ public interface ImageService {
 
     boolean isTextBox();
 
+    boolean readyToSend();
+
 }

@@ -4,15 +4,18 @@ import com.rackian.dos2translator.util.Resolution;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.PrintStream;
 
 @SpringBootApplication
 @EnableScheduling
+@EnableAspectJAutoProxy(proxyTargetClass = true)
 public class Application {
 
     public static void main(String[] args) {
@@ -64,6 +67,11 @@ public class Application {
     @Bean
     public Dimension screenDimension() {
         return Toolkit.getDefaultToolkit().getScreenSize();
+    }
+
+    @Bean
+    public PrintStream printStream() {
+        return System.out;
     }
 
 }

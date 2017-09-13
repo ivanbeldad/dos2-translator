@@ -12,3 +12,4 @@ buildNumber.properties
 !/.mvn/wrapper/maven-wrapper.jar
 /dos2translator.iml
 /.idea/
+/src/main/resources/dos2translator.json

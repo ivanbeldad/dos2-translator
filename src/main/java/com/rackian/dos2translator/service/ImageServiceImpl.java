@@ -44,11 +44,11 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Scheduled(fixedRate = 3000)
-    public void schedule() {
+    public void checkChanges() {
         update();
-        isTextBox();
-        hasChanged();
-        System.out.println();
+        if (readyToSend()) {
+            // SHOULD CALL GOOGLE API
+        }
     }
 
     public void update() {
@@ -60,8 +60,8 @@ public class ImageServiceImpl implements ImageService {
     public boolean isTextBox() {
         double similarityWithTextBoxFrame =
                 imageComparator.similarity(textBoxFrameImage, currentImage.getTextBoxFrame());
-        System.out.print("Text frame similarity: " + similarityWithTextBoxFrame + "%\t");
-        System.out.println((similarityWithTextBoxFrame > threshold));
+//        System.out.print("Text frame similarity: " + similarityWithTextBoxFrame + "%\t");
+//        System.out.println((similarityWithTextBoxFrame > threshold));
         return similarityWithTextBoxFrame > threshold;
     }
 
@@ -69,9 +69,13 @@ public class ImageServiceImpl implements ImageService {
     public boolean hasChanged() {
         double similarityBetweenPreviousImageAndCurrent =
                 imageComparator.similarity(previousImage.getTextBox(), currentImage.getTextBox());
-        System.out.print("Image similarity: " + similarityBetweenPreviousImageAndCurrent + "%\t");
-        System.out.println((similarityBetweenPreviousImageAndCurrent > threshold));
+//        System.out.print("Image similarity: " + similarityBetweenPreviousImageAndCurrent + "%\t");
+//        System.out.println((similarityBetweenPreviousImageAndCurrent > threshold));
         return similarityBetweenPreviousImageAndCurrent > threshold;
     }
 
+    @Override
+    public boolean readyToSend() {
+        return isTextBox() && hasChanged();
+    }
 }
