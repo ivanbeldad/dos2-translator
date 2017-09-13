@@ -36,7 +36,7 @@ public class Application {
 
     @Bean
     public double imageComparatorThreshold() {
-        return 99.90;
+        return 99.50;
     }
 
     @Bean

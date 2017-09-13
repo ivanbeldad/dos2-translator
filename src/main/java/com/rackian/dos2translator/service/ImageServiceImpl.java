@@ -14,6 +14,7 @@ import java.awt.image.BufferedImage;
 @Service
 public class ImageServiceImpl implements ImageService {
 
+    private VisionAPI visionAPI;
     private ImageGeneratorService imageGeneratorService;
     private ImageComparator imageComparator;
     private CurrentImage currentImage;
@@ -23,12 +24,14 @@ public class ImageServiceImpl implements ImageService {
 
     @Autowired
     public ImageServiceImpl(
+            @Qualifier("fakeVisioAPI") VisionAPI visionAPI,
             ImageGeneratorService imageGeneratorService,
             ImageComparator imageComparator,
             CurrentImage currentImage,
             PreviousImage previousImage,
             @Qualifier("textBoxFrameImage") BufferedImage textBoxFrameImage,
             @Qualifier("imageComparatorThreshold") double threshold) {
+        this.visionAPI = visionAPI;
         this.imageGeneratorService = imageGeneratorService;
         this.imageComparator = imageComparator;
         this.currentImage = currentImage;
@@ -47,7 +50,7 @@ public class ImageServiceImpl implements ImageService {
     public void checkChanges() {
         update();
         if (readyToSend()) {
-            // SHOULD CALL GOOGLE API
+            visionAPI.obtainText();
         }
     }
 
@@ -60,8 +63,6 @@ public class ImageServiceImpl implements ImageService {
     public boolean isTextBox() {
         double similarityWithTextBoxFrame =
                 imageComparator.similarity(textBoxFrameImage, currentImage.getTextBoxFrame());
-//        System.out.print("Text frame similarity: " + similarityWithTextBoxFrame + "%\t");
-//        System.out.println((similarityWithTextBoxFrame > threshold));
         return similarityWithTextBoxFrame > threshold;
     }
 
@@ -69,13 +70,12 @@ public class ImageServiceImpl implements ImageService {
     public boolean hasChanged() {
         double similarityBetweenPreviousImageAndCurrent =
                 imageComparator.similarity(previousImage.getTextBox(), currentImage.getTextBox());
-//        System.out.print("Image similarity: " + similarityBetweenPreviousImageAndCurrent + "%\t");
-//        System.out.println((similarityBetweenPreviousImageAndCurrent > threshold));
-        return similarityBetweenPreviousImageAndCurrent > threshold;
+        return similarityBetweenPreviousImageAndCurrent < threshold;
     }
 
     @Override
     public boolean readyToSend() {
         return isTextBox() && hasChanged();
     }
+
 }

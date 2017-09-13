@@ -32,6 +32,7 @@ public class GoogleVisionAPI implements VisionAPI {
             List<AnnotateImageResponse> responses = response.getResponsesList();
 
             List<EntityAnnotation> annotations = responses.get(0).getTextAnnotationsList();
+            System.out.println(annotations.get(0).getDescription());
             return annotations.get(0).getDescription();
         } catch (Exception ex) {
             return "";
