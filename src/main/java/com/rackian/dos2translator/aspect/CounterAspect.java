@@ -27,4 +27,11 @@ public class CounterAspect {
         printStream.println("Vision API called. Current calls: " + counter.getVisionApiCalls() + '\n');
     }
 
+    @Before("execution(* com.rackian.dos2translator.service.GoogleTranslationAPI.translate(..))")
+    public void translateApiCharacter() {
+        counter.incrementVisionApiCalls();
+        printStream.println("Translation API called. Current characters translated: " +
+                counter.getTranslatedApiCharacters() + '\n');
+    }
+
 }

@@ -12,12 +12,11 @@ public class DialogTextMapperService {
     private DialogText dialogText;
     private String text;
 
-    public DialogTextMapperService() {
-        dialogText = new DialogText();
+    public DialogTextMapperService(DialogText dialogText) {
+        this.dialogText = dialogText;
     }
 
     public DialogText mapStringToDialogText(String text) {
-        this.dialogText = new DialogText();
         this.text = text;
 
         setTransmitter();
@@ -59,7 +58,7 @@ public class DialogTextMapperService {
         dialogText.setResponses(responses);
     }
 
-    public String mapDialogTextToString(DialogText dialogText) {
+    public String mapDialogTextToString() {
         StringBuilder result = new StringBuilder();
         result.append(dialogText.getTransmitter()).append(" - ");
         result.append(dialogText.getMessage()).append('\n');

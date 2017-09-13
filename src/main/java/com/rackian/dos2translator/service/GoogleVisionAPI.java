@@ -27,7 +27,6 @@ public class GoogleVisionAPI implements VisionAPI {
         try {
             ImageAnnotatorClient vision = ImageAnnotatorClient.create();
 
-            // EXECUTE THE REQUEST AND GET RESPONSE
             BatchAnnotateImagesResponse response = vision.batchAnnotateImages(Collections.singletonList(getRequest()));
             List<AnnotateImageResponse> responses = response.getResponsesList();
 

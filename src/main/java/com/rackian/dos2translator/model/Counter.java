@@ -5,12 +5,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class Counter {
 
-    private int visionApiCalls;
-    private int translateApiCalls;
+    private long visionApiCalls;
+    private long translatedApiCharacters;
 
     public Counter() {
         visionApiCalls = 0;
-        translateApiCalls = 0;
+        translatedApiCharacters = 0;
     }
 
     public void incrementVisionApiCalls() {
@@ -21,12 +21,12 @@ public class Counter {
         visionApiCalls++;
     }
 
-    public int getVisionApiCalls() {
+    public long getVisionApiCalls() {
         return visionApiCalls;
     }
 
-    public int getTranslateApiCalls() {
-        return translateApiCalls;
+    public long getTranslatedApiCharacters() {
+        return translatedApiCharacters;
     }
 
 }
