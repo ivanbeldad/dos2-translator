@@ -4,8 +4,8 @@ public interface ImageService {
 
     void update();
 
-    boolean changed();
+    boolean hasChanged();
 
-    boolean textBox();
+    boolean isTextBox();
 
 }

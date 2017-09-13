@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.awt.image.BufferedImage;
 
 @Service
@@ -36,10 +37,18 @@ public class ImageServiceImpl implements ImageService {
         this.threshold = threshold;
     }
 
-    @Scheduled(fixedRate = 1000)
+    @PostConstruct
+    public void init() {
+        previousImage.setImagePack(imageGeneratorService.createImagePack());
+        currentImage.setImagePack(imageGeneratorService.createImagePack());
+    }
+
+    @Scheduled(fixedRate = 3000)
     public void schedule() {
-        System.out.println("Image updated");
         update();
+        isTextBox();
+        hasChanged();
+        System.out.println();
     }
 
     public void update() {
@@ -48,13 +57,21 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public boolean textBox() {
-        return imageComparator.similarity(textBoxFrameImage, currentImage.getTextBoxFrame()) > threshold;
+    public boolean isTextBox() {
+        double similarityWithTextBoxFrame =
+                imageComparator.similarity(textBoxFrameImage, currentImage.getTextBoxFrame());
+        System.out.print("Text frame similarity: " + similarityWithTextBoxFrame + "%\t");
+        System.out.println((similarityWithTextBoxFrame > threshold));
+        return similarityWithTextBoxFrame > threshold;
     }
 
     @Override
-    public boolean changed() {
-        return imageComparator.similarity(previousImage.getTextBox(), previousImage.getTextBox()) > threshold;
+    public boolean hasChanged() {
+        double similarityBetweenPreviousImageAndCurrent =
+                imageComparator.similarity(previousImage.getTextBox(), currentImage.getTextBox());
+        System.out.print("Image similarity: " + similarityBetweenPreviousImageAndCurrent + "%\t");
+        System.out.println((similarityBetweenPreviousImageAndCurrent > threshold));
+        return similarityBetweenPreviousImageAndCurrent > threshold;
     }
 
 }
