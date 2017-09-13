@@ -15,6 +15,7 @@ import java.awt.image.BufferedImage;
 public class ImageServiceImpl implements ImageService {
 
     private VisionAPI visionAPI;
+    private TranslationAPI translationAPI;
     private ImageGeneratorService imageGeneratorService;
     private ImageComparator imageComparator;
     private CurrentImage currentImage;
@@ -24,7 +25,8 @@ public class ImageServiceImpl implements ImageService {
 
     @Autowired
     public ImageServiceImpl(
-            @Qualifier("fakeVisioAPI") VisionAPI visionAPI,
+            VisionAPI visionAPI,
+            TranslationAPI translationAPI,
             ImageGeneratorService imageGeneratorService,
             ImageComparator imageComparator,
             CurrentImage currentImage,
@@ -32,6 +34,7 @@ public class ImageServiceImpl implements ImageService {
             @Qualifier("textBoxFrameImage") BufferedImage textBoxFrameImage,
             @Qualifier("imageComparatorThreshold") double threshold) {
         this.visionAPI = visionAPI;
+        this.translationAPI = translationAPI;
         this.imageGeneratorService = imageGeneratorService;
         this.imageComparator = imageComparator;
         this.currentImage = currentImage;
@@ -51,6 +54,7 @@ public class ImageServiceImpl implements ImageService {
         update();
         if (readyToSend()) {
             visionAPI.obtainText();
+            translationAPI.translate();
         }
     }
 

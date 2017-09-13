@@ -1,6 +1,8 @@
 package com.rackian.dos2translator.service;
 
 import com.rackian.dos2translator.model.DialogText;
+import com.rackian.dos2translator.model.OriginalDialogText;
+import com.rackian.dos2translator.model.TranslatedDialogText;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -9,38 +11,38 @@ import java.util.Map;
 @Service
 public class DialogTextMapperService {
 
-    private DialogText dialogText;
-    private String text;
+    private OriginalDialogText originalDialogText;
+    private TranslatedDialogText translatedDialogText;
+    private String originText;
 
-    public DialogTextMapperService(DialogText dialogText) {
-        this.dialogText = dialogText;
+    public DialogTextMapperService(OriginalDialogText originalDialogText, TranslatedDialogText translatedDialogText) {
+        this.originalDialogText = originalDialogText;
+        this.translatedDialogText = translatedDialogText;
     }
 
-    public DialogText mapStringToDialogText(String text) {
-        this.text = text;
+    public void mapStringToOriginDialogText(String text) {
+        this.originText = text;
 
-        setTransmitter();
-        setMessage();
-        setResponses();
-
-        return dialogText;
+        setTransmitter(originText, originalDialogText);
+        setMessage(originText, originalDialogText);
+        setResponses(originText, originalDialogText);
     }
 
-    private void setTransmitter() {
+    private void setTransmitter(String text, DialogText dialogText) {
         int start = 0;
         int end = text.indexOf(" - ") - 1;
         String transmitter = text.substring(start, end);
         dialogText.setTransmitter(transmitter);
     }
 
-    private void setMessage() {
+    private void setMessage(String text, DialogText dialogText) {
         int start = text.indexOf(" - ") + 3;
         int end = text.indexOf("\n1. ");
         String message = text.substring(start, end);
         dialogText.setMessage(message);
     }
 
-    private void setResponses() {
+    private void setResponses(String text, DialogText dialogText) {
         int optionNumber = 1;
         Map<Integer, String> responses = new HashMap<>();
         while (text.contains("\n" + optionNumber + ". ")) {
@@ -58,7 +60,15 @@ public class DialogTextMapperService {
         dialogText.setResponses(responses);
     }
 
-    public String mapDialogTextToString() {
+    public String mapOriginDialogTextToString() {
+        return mapDialogTextToString(originalDialogText);
+    }
+
+    public String mapTranslatedDialogTextToString() {
+        return mapDialogTextToString(translatedDialogText);
+    }
+
+    private String mapDialogTextToString(DialogText dialogText) {
         StringBuilder result = new StringBuilder();
         result.append(dialogText.getTransmitter()).append(" - ");
         result.append(dialogText.getMessage()).append('\n');

@@ -17,7 +17,7 @@ public class GoogleTranslationAPI implements TranslationAPI {
 
     private Translate translate = TranslateOptions.getDefaultInstance().getService();
     private TranslateOption sourceLanguage = TranslateOption.sourceLanguage("en");
-    private TranslateOption targeLanguage = TranslateOption.sourceLanguage("es");
+    private TranslateOption targetLanguage = TranslateOption.targetLanguage("es");
     private OriginalDialogText originalDialogText;
     private TranslatedDialogText translatedDialogText;
 
@@ -29,12 +29,13 @@ public class GoogleTranslationAPI implements TranslationAPI {
 
     @Override
     public void translate() {
+        translatedDialogText.setTransmitter(originalDialogText.getTransmitter());
         translateMessage();
         translateResponses();
     }
 
     private void translateMessage() {
-        Translation translation = translate.translate(originalDialogText.getMessage(), sourceLanguage, targeLanguage);
+        Translation translation = translate.translate(originalDialogText.getMessage(), sourceLanguage, targetLanguage);
         translatedDialogText.setMessage(translation.getTranslatedText());
     }
 
@@ -42,7 +43,7 @@ public class GoogleTranslationAPI implements TranslationAPI {
         Map<Integer, String> responses = new HashMap<>();
         for (Integer key:originalDialogText.getResponses().keySet()) {
             Translation translation =
-                    translate.translate(originalDialogText.getResponses().get(key), sourceLanguage, targeLanguage);
+                    translate.translate(originalDialogText.getResponses().get(key), sourceLanguage, targetLanguage);
             responses.put(key, translation.getTranslatedText());
         }
         translatedDialogText.setResponses(responses);

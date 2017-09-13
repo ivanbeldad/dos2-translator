@@ -1,5 +1,6 @@
 package com.rackian.dos2translator.model;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class DialogText {
@@ -9,6 +10,9 @@ public class DialogText {
     private Map<Integer, String> responses;
 
     public DialogText() {
+        transmitter = "";
+        message = "";
+        responses = new HashMap<>();
     }
 
     public String getTransmitter() {
