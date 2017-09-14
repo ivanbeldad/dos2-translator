@@ -1,5 +1,6 @@
 package com.rackian.dos2translator.controller;
 
+import com.rackian.dos2translator.model.ApiCalls;
 import com.rackian.dos2translator.model.Counter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,10 +19,16 @@ public class CounterController {
         this.counter = counter;
     }
 
-    @RequestMapping("/counter/")
+    @RequestMapping("/counter/currentCalls/")
     @ResponseBody
-    public Counter counter() {
-        return counter;
+    public ApiCalls counterCurrent() {
+        return counter.getApiCalls();
+    }
+
+    @RequestMapping("/counter/totalCalls/")
+    @ResponseBody
+    public ApiCalls counterTotal() {
+        return counter.getApiCallsTotal();
     }
 
 }

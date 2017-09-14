@@ -1,32 +1,54 @@
 package com.rackian.dos2translator.model;
 
+import com.rackian.dos2translator.util.CountReader;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
 
 @Component
 public class Counter {
 
-    private long visionApiCalls;
-    private long translatedApiCharacters;
+    private ApiCalls apiCalls;
+    private ApiCalls apiCallsTotal;
 
-    public Counter() {
-        visionApiCalls = 0;
-        translatedApiCharacters = 0;
+    @Autowired
+    public Counter(CountReader countReader) {
+        apiCalls = new ApiCalls(0, 0);
+        apiCallsTotal = countReader.getApiCalls();
     }
 
     public void incrementVisionApiCalls() {
-        visionApiCalls++;
+        apiCalls.incrementVisionApiCalls();
+        apiCallsTotal.incrementVisionApiCalls();
     }
 
     public void incrementTranslateApiCalls(int characters) {
-        visionApiCalls += characters;
+        apiCalls.incrementTranslateApiCalls(characters);
+        apiCallsTotal.incrementTranslateApiCalls(characters);
     }
 
     public long getVisionApiCalls() {
-        return visionApiCalls;
+        return apiCalls.getVisionApiCalls();
+    }
+
+    public long getVisionApiCallsTotal() {
+        return apiCallsTotal.getVisionApiCalls();
     }
 
     public long getTranslatedApiCharacters() {
-        return translatedApiCharacters;
+        return apiCalls.getTranslatedApiCharacters();
+    }
+
+    public long getTranslatedApiCharactersTotal() {
+        return apiCallsTotal.getTranslatedApiCharacters();
+    }
+
+    public ApiCalls getApiCalls() {
+        return apiCalls;
+    }
+
+    public ApiCalls getApiCallsTotal() {
+        return apiCallsTotal;
     }
 
 }

@@ -1,12 +1,14 @@
 package com.rackian.dos2translator.aspect;
 
 import com.rackian.dos2translator.model.Counter;
-import com.rackian.dos2translator.model.OriginalDialogText;
+import com.rackian.dos2translator.service.DialogTextMapperService;
+import com.rackian.dos2translator.util.Saver;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.io.PrintStream;
 
 @Aspect
@@ -15,30 +17,39 @@ public class CounterAspect {
 
     private PrintStream printStream;
     private Counter counter;
-    private OriginalDialogText originalDialogText;
+    private DialogTextMapperService dialogTextMapperService;
+    private Saver saver;
+    private final File FILE = new File("src/main/resources/calls.json");
 
     @Autowired
-    public CounterAspect(PrintStream printStream, Counter counter, OriginalDialogText originalDialogText) {
+    public CounterAspect(
+            PrintStream printStream,
+            Counter counter,
+            DialogTextMapperService dialogTextMapperService,
+            Saver saver) {
         this.printStream = printStream;
         this.counter = counter;
-        this.originalDialogText = originalDialogText;
+        this.dialogTextMapperService = dialogTextMapperService;
+        this.saver = saver;
     }
 
-    @Before("execution(* com.rackian.dos2translator.service.GoogleVisionAPI.obtainText())")
+    @Before("execution(* com.rackian.dos2translator.service.VisionAPI.obtainText())")
     public void visionApiCalls() {
         counter.incrementVisionApiCalls();
-        printStream.println("Vision API called. Current calls: " + counter.getVisionApiCalls() + '\n');
+        saver.save(FILE, counter.getApiCallsTotal());
+        printStream.println("Vision API called");
+        printStream.println("Current calls: " + counter.getVisionApiCalls());
+        printStream.println("Total calls: " + counter.getVisionApiCallsTotal() + '\n');
     }
 
-    @Before("execution(* com.rackian.dos2translator.service.GoogleTranslationAPI.translate(..))")
+    @Before("execution(* com.rackian.dos2translator.service.TranslationAPI.translate())")
     public void translateApiCharacter() {
-        int characters = originalDialogText.getMessage().length();
-        for (String response:originalDialogText.getResponses().values()) {
-            characters += response.length();
-        }
+        int characters = dialogTextMapperService.mapOriginDialogTextToString().length();
         counter.incrementTranslateApiCalls(characters);
-        printStream.println("Translation API called. Current characters translated: " +
-                counter.getTranslatedApiCharacters() + '\n');
+        saver.save(FILE, counter.getApiCallsTotal());
+        printStream.println("Translation API called.");
+        printStream.println("Current characters translated:" + counter.getTranslatedApiCharacters());
+        printStream.println("Total characters translated:" + counter.getTranslatedApiCharactersTotal() + '\n');
     }
 
 }
