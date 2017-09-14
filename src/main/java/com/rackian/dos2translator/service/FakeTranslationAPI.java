@@ -2,12 +2,10 @@ package com.rackian.dos2translator.service;
 
 import com.rackian.dos2translator.model.TranslatedDialogText;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 
-@Primary
 @Service
 public class FakeTranslationAPI implements TranslationAPI {
 

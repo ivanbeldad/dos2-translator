@@ -3,6 +3,7 @@ package com.rackian.dos2translator.service;
 import com.rackian.dos2translator.model.CurrentImage;
 import com.rackian.dos2translator.model.PreviousImage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -21,13 +22,13 @@ public class ImageServiceImpl implements ImageService {
 
     @Autowired
     public ImageServiceImpl(
-            VisionAPI visionAPI,
-            TranslationAPI translationAPI,
+            @Qualifier("googleVisionAPI") VisionAPI visionAPI,
+            @Qualifier("googleTranslationAPI") TranslationAPI translationAPI,
             DialogTextMapperService dialogTextMapperService,
             ImageGeneratorService imageGeneratorService,
             CurrentImage currentImage,
             PreviousImage previousImage,
-            ChangeDetector changeDetector) {
+            @Qualifier("changeDetectorImpl") ChangeDetector changeDetector) {
         this.visionAPI = visionAPI;
         this.translationAPI = translationAPI;
         this.dialogTextMapperService = dialogTextMapperService;
