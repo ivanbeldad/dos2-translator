@@ -41,11 +41,10 @@ public class GoogleVisionAPI implements VisionAPI {
     }
 
     private AnnotateImageRequest getRequest() throws IOException {
-        AnnotateImageRequest request = AnnotateImageRequest.newBuilder()
+        return AnnotateImageRequest.newBuilder()
                 .addFeatures(getFeature())
                 .setImage(getImage())
                 .build();
-        return request;
     }
 
     private Feature getFeature() {

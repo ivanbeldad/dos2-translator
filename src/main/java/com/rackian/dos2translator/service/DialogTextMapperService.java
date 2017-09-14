@@ -28,6 +28,9 @@ public class DialogTextMapperService {
     private void setTransmitter(String text, DialogText dialogText) {
         int start = 0;
         int end = text.indexOf("-");
+        if (end == -1 || end > 30) {
+            end = text.indexOf(" ");
+        }
         String transmitter = text.substring(start, end);
         dialogText.setTransmitter(transmitter);
     }
@@ -36,6 +39,7 @@ public class DialogTextMapperService {
         int start = text.indexOf("-") + 1;
         int end = startOfNumber(text, 1);
         String message = text.substring(start, end);
+        message = cleanText(message);
         dialogText.setMessage(message);
     }
 
@@ -47,10 +51,18 @@ public class DialogTextMapperService {
             int end = startOfNumber(text, (optionNumber + 1));
             String response = text.substring(start, end);
             response = response.replace(optionNumber + ". ", "");
+            response = cleanText(response);
             responses.put(optionNumber, response);
             optionNumber++;
         }
         dialogText.setResponses(responses);
+    }
+
+    private String cleanText(String text) {
+        text = text.replace("*", "");
+        text = text.replace("'", "");
+        text = text.replace("\"", "");
+        return text;
     }
 
     private int startOfNumber(String text, int number) {

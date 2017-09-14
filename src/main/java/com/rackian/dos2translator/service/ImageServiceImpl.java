@@ -52,7 +52,7 @@ public class ImageServiceImpl implements ImageService {
         currentImage.setImagePack(imageGeneratorService.createImagePack());
     }
 
-    @Scheduled(fixedRate = 1000)
+//    @Scheduled(fixedRate = 500)
     public void checkChanges() {
         update();
         if (readyToSend()) {

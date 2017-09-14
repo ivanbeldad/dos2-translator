@@ -18,11 +18,6 @@ public class LoggerAspect {
         this.dialogTextMapperService = dialogTextMapperService;
     }
 
-    @Before("execution(* com.rackian.dos2translator.service.ImageServiceImpl.checkChanges())")
-    public void checking() {
-        printStream.println("Checking changes...");
-    }
-
     @After("execution(* com.rackian.dos2translator.service.GoogleVisionAPI.obtainText())")
     public void visionApi() {
         printStream.println("Original message:\n");
