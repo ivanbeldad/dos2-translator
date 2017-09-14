@@ -44,8 +44,9 @@ public class ImageServiceImpl implements ImageService {
         currentImage.setImagePack(imageGeneratorService.createImagePack());
     }
 
-    @Scheduled(fixedRate = 500)
+    @Scheduled(fixedRate = 1000)
     public void checkChanges() {
+        update();
         if (changeDetector.changed()) {
             visionAPI.obtainText();
             translationAPI.translate();
@@ -53,6 +54,11 @@ public class ImageServiceImpl implements ImageService {
         if (!changeDetector.isTextBox()) {
             dialogTextMapperService.clearDialogs();
         }
+    }
+
+    public void update() {
+        previousImage.setImagePack(currentImage.getImagePack());
+        currentImage.setImagePack(imageGeneratorService.createImagePack());
     }
 
 }

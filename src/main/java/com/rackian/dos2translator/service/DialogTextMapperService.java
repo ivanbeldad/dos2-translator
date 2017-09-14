@@ -25,18 +25,23 @@ public class DialogTextMapperService {
         setResponses(text, originalDialogText);
     }
 
+//    private void setTransmitter(String text, DialogText dialogText) {
+//        int start = 0;
+//        int end = text.indexOf("-");
+//        if (end == -1 || end > 30) {
+//            end = text.indexOf(" ");
+//        }
+//        String transmitter = text.substring(start, end);
+//        dialogText.setTransmitter(transmitter);
+//    }
+
     private void setTransmitter(String text, DialogText dialogText) {
-        int start = 0;
-        int end = text.indexOf("-");
-        if (end == -1 || end > 30) {
-            end = text.indexOf(" ");
-        }
-        String transmitter = text.substring(start, end);
-        dialogText.setTransmitter(transmitter);
+        dialogText.setTransmitter("Transmitter");
     }
 
     private void setMessage(String text, DialogText dialogText) {
-        int start = text.indexOf("-") + 1;
+//        int start = text.indexOf("-") + 1;
+        int start = 0;
         int end = startOfNumber(text, 1);
         String message = text.substring(start, end);
         message = cleanText(message);

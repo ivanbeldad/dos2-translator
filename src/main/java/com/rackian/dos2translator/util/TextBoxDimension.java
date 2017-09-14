@@ -16,7 +16,7 @@ public class TextBoxDimension {
     public int getWidth() {
         switch (resolution) {
             case ULTRA_WIDE_2k:
-                return 1440;
+                return 825;
             default:
                 return 0;
         }
@@ -25,7 +25,7 @@ public class TextBoxDimension {
     public int getHeight() {
         switch (resolution) {
             case ULTRA_WIDE_2k:
-                return 500;
+                return 1150;
             default:
                 return 0;
         }
@@ -34,7 +34,7 @@ public class TextBoxDimension {
     public int getXOffset() {
         switch (resolution) {
             case ULTRA_WIDE_2k:
-                return 1030;
+                return 1380;
             default:
                 return 0;
         }
@@ -43,7 +43,7 @@ public class TextBoxDimension {
     public int getYOffset() {
         switch (resolution) {
             case ULTRA_WIDE_2k:
-                return 925;
+                return 130;
             default:
                 return 0;
         }
