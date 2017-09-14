@@ -1,8 +1,8 @@
 package com.rackian.dos2translator.service;
 
 import com.google.cloud.translate.Translate;
-import com.google.cloud.translate.TranslateOptions;
 import com.google.cloud.translate.Translate.TranslateOption;
+import com.google.cloud.translate.TranslateOptions;
 import com.google.cloud.translate.Translation;
 import com.rackian.dos2translator.model.OriginalDialogText;
 import com.rackian.dos2translator.model.TranslatedDialogText;
